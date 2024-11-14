@@ -1,3 +1,4 @@
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -22,13 +23,29 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
   public static final int PDH_ID = 0;
-
   // boolean isPractice = false;
 
   // public Constants(){
   //   checkPracticeMode(isPractice);
   // }
+  public static class VisionConstants {
+    public static class cameraTranslationConstants {
+      //translation of camera in meters (change when camera has been mounted on robot)
+      public static final double tX = -32 * 0.01;
+      public static final double tY = 0.0 * 0.01;
+      public static final double tZ = 32 * 0.01;
+    }
+    public static class cameraRotationConstants {
+      //rotation of camera (change when camera has been mounted on robot)
+      public static final double rRoll = 0.0;
+      public static final double rPitch = 0.0;
+      public static final double rYaw = 0.0;
+    }
 
+    public static class distanceConstants {
+      public static final double goalMeterDistance = 3.0;
+    }
+ }
 
 
 

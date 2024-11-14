@@ -8,11 +8,12 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.AprilTagStats;
 import frc.robot.subsystems.Drivetrain;
 
 public class AdjustRobotPos extends Command {
    private Drivetrain drivetrain = Drivetrain.getInstance();
-
+   private AprilTagStats apriltag = new AprilTagStats();
   double setAngle;
   double currentAngle;
 
@@ -26,10 +27,9 @@ public class AdjustRobotPos extends Command {
 
   PIDController rotationController;
 
-  public AdjustRobotPos(double angleDegrees) {
-
-    setAngle = angleDegrees;
+  public AdjustRobotPos() {
     addRequirements(drivetrain);
+    addRequirements(apriltag);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -50,6 +50,13 @@ public class AdjustRobotPos extends Command {
       new Translation2d(), 
       true
     );
+
+    boolean targetIsFound = apriltag.hasTarget();
+        apriltag.setTagView(targetIsFound);
+        if (targetIsFound) {
+          apriltag.updateData();
+      drivetrain.visionDrive(apriltag);
+    }
   }
 
   // Called once the command ends or is interrupted.
