@@ -20,8 +20,6 @@ public class AdjustRobotPos extends Command {
     this.apriltag = apriltag;
     addRequirements(drivetrain);
     addRequirements(apriltag);
-    if(!apriltag.hasTarget())
-      end(false);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

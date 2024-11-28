@@ -26,6 +26,7 @@ import frc.robot.commands.OverrideIntakeDown;
 import frc.robot.commands.OverrideIntakeUp;
 import frc.robot.commands.SetShooterAmp;
 import frc.robot.commands.SetShooterAngle;
+import frc.robot.commands.Shoot;
 import frc.robot.commands.ShooterDown;
 import frc.robot.commands.ShooterUp;
 import frc.robot.commands.SwerveDrive;
@@ -185,7 +186,13 @@ public class RobotContainer {
     driverController.button(7).onTrue(new InstantCommand(() -> m_Shooter.zeroEncoder()));
 
     //Vision
-    driverController.x().onTrue(new AdjustRobotPos(drivetrain, m_AprilTag));
+    //Basic Code:
+    // driverController.x()
+    // .and(()->m_AprilTag.getID()==4||m_AprilTag.getID()==7)
+    // .onTrue(new AdjustRobotPos(drivetrain, m_AprilTag));
+    driverController.x()
+     .and(()->m_AprilTag.getID()==4||m_AprilTag.getID()==7)
+    .onTrue(new SequentialCommandGroup(new ParallelCommandGroup(new AdjustRobotPos(drivetrain, m_AprilTag),new SetShooterAngle(m_Shooter,Constants.ShooterConstants.kShooterAutoAngle)),new Shoot(m_ShooterRoller)));
     //Figure out after there's a failsafe to not finding apriltags driverController.x().onTrue(new SequentialCommandGroup(new ParallelCommandGroup(new AdjustRobotPos(drivetrain, m_AprilTag),new SetShooterAngle(m_Shooter,Constants.ShooterConstants.kShooterAutoAngle)),new Shoot(m_ShooterRoller)));
     // operatorController.start().whileTrue(new ClimbDown(m_Climber));
 
