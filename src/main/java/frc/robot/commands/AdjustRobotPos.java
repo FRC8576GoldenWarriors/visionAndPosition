@@ -4,7 +4,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
@@ -14,18 +13,7 @@ import frc.robot.subsystems.Drivetrain;
 public class AdjustRobotPos extends Command {
    private Drivetrain drivetrain;
    private AprilTagStats apriltag;
-  double setAngle;
-  double currentAngle;
 
-  double frontSpeed;
-  double sideSpeed;
-  double rotationSpeed;
-
-  double kP;
-  double kI;
-  double kD;
-
-  PIDController rotationController;
 
   public AdjustRobotPos(Drivetrain drive, AprilTagStats apriltag) {
     drivetrain = drive;
@@ -46,15 +34,6 @@ public class AdjustRobotPos extends Command {
   @Override
   public void execute() {
 
-    RobotContainer.drivetrain.swerveDrive(
-      frontSpeed, 
-      sideSpeed, 
-      rotationSpeed, 
-      true, 
-      new Translation2d(), 
-      true
-    );
-
     boolean targetIsFound = apriltag.hasTarget();
         apriltag.setTagView(targetIsFound);
         if (targetIsFound) {
@@ -67,8 +46,8 @@ public class AdjustRobotPos extends Command {
   @Override
   public void end(boolean interrupted) {
     RobotContainer.drivetrain.swerveDrive(
-      frontSpeed, 
-      sideSpeed, 
+      0, 
+      0, 
       0, 
       true, 
       new Translation2d(), 
