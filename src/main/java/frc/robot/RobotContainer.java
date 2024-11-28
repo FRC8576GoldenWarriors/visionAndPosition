@@ -4,18 +4,14 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AdjustRobotPos;
@@ -24,14 +20,12 @@ import frc.robot.commands.ClimbDown;
 import frc.robot.commands.FFShooterAngle;
 import frc.robot.commands.IntakeDown;
 import frc.robot.commands.IntakeIn;
-import frc.robot.commands.AdjustRobotPos;
 import frc.robot.commands.IntakeOut;
 import frc.robot.commands.IntakeUp;
 import frc.robot.commands.OverrideIntakeDown;
 import frc.robot.commands.OverrideIntakeUp;
 import frc.robot.commands.SetShooterAmp;
 import frc.robot.commands.SetShooterAngle;
-import frc.robot.commands.Shoot;
 import frc.robot.commands.ShooterDown;
 import frc.robot.commands.ShooterUp;
 import frc.robot.commands.SwerveDrive;
@@ -192,6 +186,7 @@ public class RobotContainer {
 
     //Vision
     driverController.x().onTrue(new AdjustRobotPos(drivetrain, m_AprilTag));
+    //Figure out after there's a failsafe to not finding apriltags driverController.x().onTrue(new SequentialCommandGroup(new ParallelCommandGroup(new AdjustRobotPos(drivetrain, m_AprilTag),new SetShooterAngle(m_Shooter,Constants.ShooterConstants.kShooterAutoAngle)),new Shoot(m_ShooterRoller)));
     // operatorController.start().whileTrue(new ClimbDown(m_Climber));
 
     //driverController.y().onTrue(getAutonomousCommand())

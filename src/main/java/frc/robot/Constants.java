@@ -223,6 +223,9 @@ public final class Constants {
     //COMP SHOOTER PVIOT
     public static final double kPivotUpSpeed = -0.25;
      public static final double kPivotDownSpeed = 0.25;
+
+     //AutoAim Constants
+    public static final double kShooterAutoAngle = Math.tan(211/(VisionConstants.distanceConstants.goalMeterDistance*100.0));
   }
 
 
