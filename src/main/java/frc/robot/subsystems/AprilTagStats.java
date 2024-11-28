@@ -1,9 +1,7 @@
 package frc.robot.subsystems;
 
-import java.nio.file.Path;
 import java.util.List;
 
-import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
@@ -12,7 +10,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
-import com.pathplanner.lib.path.*;
+import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -30,8 +28,9 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.VisionConstants;
 import frc.robot.Constants.VisionConstants.*;
+import frc.robot.Constants.VisionConstants.cameraRotationConstants;
+import frc.robot.Constants.VisionConstants.cameraTranslationConstants;
 
 public class AprilTagStats extends SubsystemBase {
     //Creating new object for the arducam
@@ -101,16 +100,26 @@ public class AprilTagStats extends SubsystemBase {
         return estimatedPose;
     }
     public PathPlannerPath robotPath(){
+        List<Translation2d> waypoints = null;
         Pose2d tagPose = m_layout.getTagPose(m_id).get().toPose2d();
-        List<Translation2d> waypoints = PathPlannerPath.bezierFromPoses(
+        if(m_id==7){
+        waypoints = PathPlannerPath.bezierFromPoses(
         getRobotPose().toPose2d(),
         new Pose2d(tagPose.getX()+Constants.VisionConstants.distanceConstants.goalMeterDistance,tagPose.getY(),tagPose.getRotation())
 );
+        }
+        else if(m_id==4){
+        waypoints = PathPlannerPath.bezierFromPoses(
+        getRobotPose().toPose2d(),
+        new Pose2d(tagPose.getX()-Constants.VisionConstants.distanceConstants.goalMeterDistance,tagPose.getY(),tagPose.getRotation())
+);
+        }
 
 PathConstraints constraints = new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI); // The constraints for this path.
 // PathConstraints constraints = PathConstraints.unlimitedConstraints(12.0); // You can also use unlimited constraints, only limited by motor torque and nominal battery voltage
 
 // Create the path using the waypoints created above
+if(waypoints!=null){
 PathPlannerPath path = new PathPlannerPath(
         waypoints,
         constraints,
@@ -118,7 +127,8 @@ PathPlannerPath path = new PathPlannerPath(
         ,true 
 );
 return path;
-
+}
+return null;
     }
     public void updatePose() {
         //Updates the robots pose on network tables

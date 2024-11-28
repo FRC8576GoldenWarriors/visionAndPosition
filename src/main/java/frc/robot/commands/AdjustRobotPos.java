@@ -12,8 +12,8 @@ import frc.robot.subsystems.AprilTagStats;
 import frc.robot.subsystems.Drivetrain;
 
 public class AdjustRobotPos extends Command {
-   private Drivetrain drivetrain = Drivetrain.getInstance();
-   private AprilTagStats apriltag = new AprilTagStats();
+   private Drivetrain drivetrain;
+   private AprilTagStats apriltag;
   double setAngle;
   double currentAngle;
 
@@ -27,9 +27,13 @@ public class AdjustRobotPos extends Command {
 
   PIDController rotationController;
 
-  public AdjustRobotPos() {
+  public AdjustRobotPos(Drivetrain drive, AprilTagStats apriltag) {
+    drivetrain = drive;
+    this.apriltag = apriltag;
     addRequirements(drivetrain);
     addRequirements(apriltag);
+    if(!apriltag.hasTarget())
+      end(false);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

@@ -18,11 +18,13 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.AdjustRobotPos;
 import frc.robot.commands.Climb;
 import frc.robot.commands.ClimbDown;
 import frc.robot.commands.FFShooterAngle;
 import frc.robot.commands.IntakeDown;
 import frc.robot.commands.IntakeIn;
+import frc.robot.commands.AdjustRobotPos;
 import frc.robot.commands.IntakeOut;
 import frc.robot.commands.IntakeUp;
 import frc.robot.commands.OverrideIntakeDown;
@@ -33,6 +35,7 @@ import frc.robot.commands.Shoot;
 import frc.robot.commands.ShooterDown;
 import frc.robot.commands.ShooterUp;
 import frc.robot.commands.SwerveDrive;
+import frc.robot.subsystems.AprilTagStats;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -56,7 +59,7 @@ public class RobotContainer {
   public static final Shooter m_Shooter = new Shooter();
   public static final ShooterRoller m_ShooterRoller = new ShooterRoller();
   public static final Climber m_Climber = new Climber();
-
+  public static final AprilTagStats m_AprilTag = new AprilTagStats();
   public final LEDStrip ledStrip;
  // public static final LED m_led = new LED(Constants.LEDConstants.LED_PORT1, Constants.LEDConstants.LedLength1);
 
@@ -186,6 +189,9 @@ public class RobotContainer {
     driverController.rightBumper().whileTrue(new IntakeOut(m_IntakeRoller));
 
     driverController.button(7).onTrue(new InstantCommand(() -> m_Shooter.zeroEncoder()));
+
+    //Vision
+    driverController.x().onTrue(new AdjustRobotPos(drivetrain, m_AprilTag));
     // operatorController.start().whileTrue(new ClimbDown(m_Climber));
 
     //driverController.y().onTrue(getAutonomousCommand())
