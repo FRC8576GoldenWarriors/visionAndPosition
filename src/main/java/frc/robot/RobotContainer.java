@@ -54,7 +54,7 @@ public class RobotContainer {
   public static final Shooter m_Shooter = new Shooter();
   public static final ShooterRoller m_ShooterRoller = new ShooterRoller();
   public static final Climber m_Climber = new Climber();
-  public static final AprilTagStats m_AprilTag = new AprilTagStats();
+  public static final AprilTagStats m_AprilTag = new AprilTagStats(Constants.VisionConstants.nameConstants.publishName,Constants.VisionConstants.nameConstants.tabName,Constants.VisionConstants.nameConstants.cameraName);
   public final LEDStrip ledStrip;
  // public static final LED m_led = new LED(Constants.LEDConstants.LED_PORT1, Constants.LEDConstants.LedLength1);
 
@@ -188,9 +188,9 @@ public class RobotContainer {
     //Vision
     //Basic Code:
     // driverController.x()
-    // .and(()->m_AprilTag.getID()==4||m_AprilTag.getID()==7)
+    // .and(()->m_AprilTag.getID()==4||m_AprilTag.getID()==7) 
     // .onTrue(new AdjustRobotPos(drivetrain, m_AprilTag));
-    driverController.x()
+    operatorController.leftBumper()
      .and(()->m_AprilTag.getID()==4||m_AprilTag.getID()==7)
     .onTrue(new SequentialCommandGroup(new ParallelCommandGroup(new AdjustRobotPos(drivetrain, m_AprilTag),new SetShooterAngle(m_Shooter,Constants.ShooterConstants.kShooterAutoAngle)),new Shoot(m_ShooterRoller)));
     //Figure out after there's a failsafe to not finding apriltags driverController.x().onTrue(new SequentialCommandGroup(new ParallelCommandGroup(new AdjustRobotPos(drivetrain, m_AprilTag),new SetShooterAngle(m_Shooter,Constants.ShooterConstants.kShooterAutoAngle)),new Shoot(m_ShooterRoller)));

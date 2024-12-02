@@ -45,6 +45,11 @@ public final class Constants {
     public static class distanceConstants {
       public static final double goalMeterDistance = 3.0;
     }
+    public static class nameConstants{
+      public static final String cameraName = "Arducam_OV9281_USB_Camera (1)";
+      public static final String tabName = "Vision";
+      public static final String publishName = "VisionPose";
+    }
  }
 
 
@@ -58,7 +63,17 @@ public final class Constants {
 
   public static final class SwerveConstants{
     //Drivetrain motor/encoder IDs
+    public static class PoseConfig {
+      // Increase these numbers to trust your model's state estimates less.
+      public static final double kPositionStdDevX = 0.1;
+      public static final double kPositionStdDevY = 0.1;
+      public static final double kPositionStdDevTheta = 10;
 
+      // Increase these numbers to trust global measurements from vision less.
+      public static final double kVisionStdDevX = 2;
+      public static final double kVisionStdDevY = 2;
+      public static final double kVisionStdDevTheta = 1;
+    }
     //PRACTICE IDS
     // public static final int LEFT_FRONT_DRIVE_ID = 7;
     // public static final int RIGHT_FRONT_DRIVE_ID = 1;

@@ -24,17 +24,17 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.VisionConstants.*;
 import frc.robot.Constants.VisionConstants.cameraRotationConstants;
 import frc.robot.Constants.VisionConstants.cameraTranslationConstants;
 
 public class AprilTagStats extends SubsystemBase {
     //Creating new object for the arducam
-    private final PhotonCamera m_arduCam = new PhotonCamera("Arducam_OV9281_USB_Camera (1)");
+    private PhotonCamera m_arduCam;
     
     //Object representation of the field
     private AprilTagFieldLayout m_layout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
@@ -46,7 +46,7 @@ public class AprilTagStats extends SubsystemBase {
     private PhotonPoseEstimator m_photonPoseEstimator;
 
     //Shuffleboard tab named vision, and 4 different widgets for yaw, pitch, tag id, and distance to a tag
-    private ShuffleboardTab m_tab = Shuffleboard.getTab("Vision");
+    private ShuffleboardTab m_tab;
     private GenericEntry m_yawEntry, m_pitchEntry, m_idEntry, m_distanceEntry, m_tagStatusEntry;
 
     //Variables to hold all of the widget values
@@ -60,16 +60,16 @@ public class AprilTagStats extends SubsystemBase {
     private StructPublisher<Pose3d> m_publisher;
     private PhotonTrackedTarget target;
     private Pose3d relativePose;
-
-    public AprilTagStats() {
+    public AprilTagStats(String publishName, String tabName, String cameraName) {
+        m_publisher = NetworkTableInstance.getDefault().getStructTopic(publishName, Pose3d.struct).publish();
+        m_tab = Shuffleboard.getTab(tabName);
+        m_arduCam = new PhotonCamera(cameraName);
         m_yawEntry = m_tab.add("yaw", m_yaw).getEntry();
         m_pitchEntry = m_tab.add("pitch", m_pitch).getEntry();
         m_idEntry = m_tab.add("id", m_id).getEntry();
         m_distanceEntry = m_tab.add("distance", m_distance).getEntry();
         m_tagStatusEntry = m_tab.add("Tag In View", m_tagStatus).getEntry();
         
-        m_publisher = NetworkTableInstance.getDefault().getStructTopic("Current Robot Pose", Pose3d.struct).publish();
-
         m_photonPoseEstimator = new PhotonPoseEstimator(m_layout, PoseStrategy.CLOSEST_TO_LAST_POSE, m_arduCam, m_robotToCam);
     }
 
@@ -185,6 +185,9 @@ return null;
         else {
             m_tagStatusEntry.setBoolean(false);
         }
+    }
+    public double getTimeStamp(double latency){
+        return Timer.getFPGATimestamp()-(latency/1000d);
     }
 
     public void updateView() {
