@@ -26,7 +26,6 @@ import frc.robot.commands.OverrideIntakeDown;
 import frc.robot.commands.OverrideIntakeUp;
 import frc.robot.commands.SetShooterAmp;
 import frc.robot.commands.SetShooterAngle;
-import frc.robot.commands.Shoot;
 import frc.robot.commands.ShooterDown;
 import frc.robot.commands.ShooterUp;
 import frc.robot.commands.SwerveDrive;
@@ -43,6 +42,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterRoller;
 
 
+
 public class RobotContainer {
 
   public static final Drivetrain drivetrain = Drivetrain.getInstance();
@@ -54,7 +54,7 @@ public class RobotContainer {
   public static final Shooter m_Shooter = new Shooter();
   public static final ShooterRoller m_ShooterRoller = new ShooterRoller();
   public static final Climber m_Climber = new Climber();
-  public static final AprilTagStats m_AprilTag = new AprilTagStats(Constants.VisionConstants.nameConstants.publishName,Constants.VisionConstants.nameConstants.tabName,Constants.VisionConstants.nameConstants.cameraName);
+  public static final AprilTagStats m_AprilTag = new AprilTagStats(Constants.VisionConstants.nameConstants.cameraName, Constants.VisionConstants.nameConstants.publishName,Constants.VisionConstants.nameConstants.tabName);
   public final LEDStrip ledStrip;
  // public static final LED m_led = new LED(Constants.LEDConstants.LED_PORT1, Constants.LEDConstants.LedLength1);
 
@@ -191,8 +191,11 @@ public class RobotContainer {
     // .and(()->m_AprilTag.getID()==4||m_AprilTag.getID()==7) 
     // .onTrue(new AdjustRobotPos(drivetrain, m_AprilTag));
     operatorController.leftBumper()
-     .and(()->m_AprilTag.getID()==4||m_AprilTag.getID()==7)
-    .onTrue(new SequentialCommandGroup(new ParallelCommandGroup(new AdjustRobotPos(drivetrain, m_AprilTag),new SetShooterAngle(m_Shooter,Constants.ShooterConstants.kShooterAutoAngle)),new Shoot(m_ShooterRoller)));
+    .and(()->Constants.VisionConstants.distanceConstants.useableIDs.contains(m_AprilTag.getID()))
+    .onTrue(new AdjustRobotPos(drivetrain, m_AprilTag));
+    // operatorController.leftBumper()
+    //  .and(()->Constants.VisionConstants.distanceConstants.useableIDs.contains(m_AprilTag.getID()))
+    // .onTrue(new SequentialCommandGroup(new ParallelCommandGroup(new AdjustRobotPos(drivetrain, m_AprilTag),new SetShooterAngle(m_Shooter,Constants.ShooterConstants.kShooterAutoAngle)),new Shoot(m_ShooterRoller)));
     //Figure out after there's a failsafe to not finding apriltags driverController.x().onTrue(new SequentialCommandGroup(new ParallelCommandGroup(new AdjustRobotPos(drivetrain, m_AprilTag),new SetShooterAngle(m_Shooter,Constants.ShooterConstants.kShooterAutoAngle)),new Shoot(m_ShooterRoller)));
     // operatorController.start().whileTrue(new ClimbDown(m_Climber));
 

@@ -5,6 +5,9 @@
 
 package frc.robot;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -12,7 +15,6 @@ import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
-
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -44,6 +46,7 @@ public final class Constants {
 
     public static class distanceConstants {
       public static final double goalMeterDistance = 3.0;
+      public static final List<Integer> useableIDs = Arrays.asList(4,7);
     }
     public static class nameConstants{
       public static final String cameraName = "Arducam_OV9281_USB_Camera (1)";

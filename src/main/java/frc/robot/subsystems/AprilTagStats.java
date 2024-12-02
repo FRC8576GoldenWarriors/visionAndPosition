@@ -60,7 +60,7 @@ public class AprilTagStats extends SubsystemBase {
     private StructPublisher<Pose3d> m_publisher;
     private PhotonTrackedTarget target;
     private Pose3d relativePose;
-    public AprilTagStats(String publishName, String tabName, String cameraName) {
+    public AprilTagStats(String cameraName, String publishName, String tabName) {
         m_publisher = NetworkTableInstance.getDefault().getStructTopic(publishName, Pose3d.struct).publish();
         m_tab = Shuffleboard.getTab(tabName);
         m_arduCam = new PhotonCamera(cameraName);
