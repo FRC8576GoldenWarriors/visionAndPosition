@@ -28,6 +28,7 @@ import frc.robot.commands.SetShooterAmp;
 import frc.robot.commands.SetShooterAngle;
 import frc.robot.commands.ShooterDown;
 import frc.robot.commands.ShooterUp;
+import frc.robot.commands.StandardAdjustRobotPos;
 import frc.robot.commands.SwerveDrive;
 import frc.robot.subsystems.AprilTagStats;
 import frc.robot.subsystems.Climber;
@@ -198,6 +199,8 @@ public class RobotContainer {
     // .onTrue(new SequentialCommandGroup(new ParallelCommandGroup(new AdjustRobotPos(drivetrain, m_AprilTag),new SetShooterAngle(m_Shooter,Constants.ShooterConstants.kShooterAutoAngle)),new Shoot(m_ShooterRoller)));
     //Figure out after there's a failsafe to not finding apriltags driverController.x().onTrue(new SequentialCommandGroup(new ParallelCommandGroup(new AdjustRobotPos(drivetrain, m_AprilTag),new SetShooterAngle(m_Shooter,Constants.ShooterConstants.kShooterAutoAngle)),new Shoot(m_ShooterRoller)));
     // operatorController.start().whileTrue(new ClimbDown(m_Climber));
+    //bindings for running non-path planner vision movement
+    operatorController.rightBumper().and(operatorController.a()).and(()->Constants.VisionConstants.distanceConstants.useableIDs.contains(m_AprilTag.getID())).onTrue(new StandardAdjustRobotPos(drivetrain, m_AprilTag));
 
     //driverController.y().onTrue(getAutonomousCommand())
     

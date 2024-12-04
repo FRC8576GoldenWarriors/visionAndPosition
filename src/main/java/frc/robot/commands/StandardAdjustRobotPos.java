@@ -6,16 +6,17 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.AprilTagStats;
 import frc.robot.subsystems.Drivetrain;
 
-public class AdjustRobotPos extends Command {
+public class StandardAdjustRobotPos extends Command {
    private Drivetrain drivetrain;
    private AprilTagStats apriltag;
 
 
-  public AdjustRobotPos(Drivetrain drive, AprilTagStats apriltag) {
+  public StandardAdjustRobotPos(Drivetrain drive, AprilTagStats apriltag) {
     drivetrain = drive;
     this.apriltag = apriltag;
     addRequirements(drivetrain);
@@ -31,12 +32,17 @@ public class AdjustRobotPos extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
     boolean targetIsFound = apriltag.hasTarget();
     apriltag.setTagView(targetIsFound);
     if (targetIsFound) {
-      apriltag.updateData();
-      drivetrain.visionDrive(apriltag);
+        apriltag.updateData();
+        //If possible, change to using PID for turn and forward
+        double turn = (Constants.VisionConstants.distanceConstants.visionAngleDegrees - apriltag.getYaw()) * Constants.VisionConstants.VisionPIDConstants.kPVisionTurning;
+        double forward = (Constants.VisionConstants.distanceConstants.goalMeterDistance - apriltag.getDistance()) * Constants.VisionConstants.VisionPIDConstants.kPVisionMoving;
+        
+        double sideSpeed = -RobotContainer.driverController.getLeftX() * Math.abs(RobotContainer.driverController.getLeftX()) * 1.8;
+        sideSpeed = Math.abs(sideSpeed) > 0.15 ? sideSpeed : 0;
+        drivetrain.swerveDrive(forward, sideSpeed, turn, true, new Translation2d(), false);;
     }
   }
 
@@ -59,3 +65,4 @@ public class AdjustRobotPos extends Command {
     return true;
   }
 }
+

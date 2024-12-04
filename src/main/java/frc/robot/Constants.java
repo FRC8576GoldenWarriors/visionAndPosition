@@ -46,12 +46,19 @@ public final class Constants {
 
     public static class distanceConstants {
       public static final double goalMeterDistance = 3.0;
+      public static final double visionAngleDegrees = 0.0;
       public static final List<Integer> useableIDs = Arrays.asList(4,7);
     }
+
     public static class nameConstants{
       public static final String cameraName = "Arducam_OV9281_USB_Camera (1)";
       public static final String tabName = "Vision";
       public static final String publishName = "VisionPose";
+    }
+
+    public static class VisionPIDConstants {
+      public static final double kPVisionTurning = 0.01;
+      public static final double kPVisionMoving = 0.5;
     }
  }
 
