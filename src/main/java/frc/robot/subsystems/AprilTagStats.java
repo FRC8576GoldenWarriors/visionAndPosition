@@ -56,10 +56,22 @@ public class AprilTagStats extends SubsystemBase {
 
     //Generic starting position of the robot
     // private final Pose3d m_startPose3d = new Pose3d(12.5, 5.5, 0, new Rotation3d());
-
+    public static final AprilTagStats apriltagstats = new AprilTagStats();
     private StructPublisher<Pose3d> m_publisher;
     private PhotonTrackedTarget target;
     private Pose3d relativePose;
+    public AprilTagStats(){
+        m_publisher = NetworkTableInstance.getDefault().getStructTopic(Constants.VisionConstants.nameConstants.publishName, Pose3d.struct).publish();
+        m_tab = Shuffleboard.getTab(Constants.VisionConstants.nameConstants.tabName);
+        m_arduCam = new PhotonCamera(Constants.VisionConstants.nameConstants.cameraName);
+        m_yawEntry = m_tab.add("yaw", m_yaw).getEntry();
+        m_pitchEntry = m_tab.add("pitch", m_pitch).getEntry();
+        m_idEntry = m_tab.add("id", m_id).getEntry();
+        m_distanceEntry = m_tab.add("distance", m_distance).getEntry();
+        m_tagStatusEntry = m_tab.add("Tag In View", m_tagStatus).getEntry();
+        
+        m_photonPoseEstimator = new PhotonPoseEstimator(m_layout, PoseStrategy.CLOSEST_TO_LAST_POSE, m_arduCam, m_robotToCam);
+    }
     public AprilTagStats(String cameraName, String publishName, String tabName) {
         m_publisher = NetworkTableInstance.getDefault().getStructTopic(publishName, Pose3d.struct).publish();
         m_tab = Shuffleboard.getTab(tabName);
@@ -77,6 +89,9 @@ public class AprilTagStats extends SubsystemBase {
         return m_arduCam.getLatestResult().getBestTarget();
     }
 
+    public static AprilTagStats getInstance(){
+        return apriltagstats;
+    }
     public boolean pingCam() {
         return m_arduCam.isConnected();
     }
@@ -188,6 +203,9 @@ return null;
     }
     public double getTimeStamp(double latency){
         return Timer.getFPGATimestamp()-(latency/1000d);
+    }
+    public double getLatency(){
+        return m_arduCam.getLatestResult().getLatencyMillis();
     }
 
     public void updateView() {
