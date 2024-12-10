@@ -64,7 +64,6 @@ public class Drivetrain extends SubsystemBase {
   //   SwerveConstants.RIGHT_BACK_OFFSET);
 
   //#@PN 11/28  Display robot pose on 2D and 3D layout in AdvantageScope
-  private Field2d m_Field2d;
   
   private final StructArrayPublisher<SwerveModuleState> m_ModuleStatePublisherIn;
   private final StructArrayPublisher<SwerveModuleState> m_ModuleStatePublisherActual;
@@ -120,8 +119,6 @@ public class Drivetrain extends SubsystemBase {
   public Drivetrain() {
 
       //#@PN 11/28
-    m_Field2d = new Field2d();
-    SmartDashboard.putData("GWR_Field", m_Field2d);
         
     m_ModuleStatePublisherIn = NetworkTableInstance.getDefault().getTable("24Karat").getStructArrayTopic("SwerveStates/In", SwerveModuleState.struct).publish();
     m_ModuleStatePublisherActual = NetworkTableInstance.getDefault().getTable("24Karat").getStructArrayTopic("SwerveStates/Actual", SwerveModuleState.struct).publish();
@@ -179,7 +176,6 @@ public class Drivetrain extends SubsystemBase {
 
     //#@PN 11/28
     Pose2d curPose2d = odometry.update(getHeadingRotation2d(), getModulePositions());
-    m_Field2d.setRobotPose(PoseEstimator.getPoseEstimator().getEstimatedPosition());
 
     m_ModuleStatePublisherActual.set(getModuleStates());
 

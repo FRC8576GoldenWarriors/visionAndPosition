@@ -22,8 +22,13 @@ public class PoseEstimator extends SubsystemBase {
     private final Drivetrain drivetrain;
     private Pose2d visionPose;
     private static SwerveDrivePoseEstimator poseEstimator;
+    private Field2d field;
     public PoseEstimator(){
+    field = new Field2d();
+    SmartDashboard.putData("GWRField",field);
     drivetrain = Drivetrain.getInstance();
+    
+
     // Maxswerve Version from MAXSwerve.java in core
     poseEstimator =
         new SwerveDrivePoseEstimator(
@@ -59,6 +64,7 @@ public class PoseEstimator extends SubsystemBase {
       if (Constants.VisionConstants.distanceConstants.useableIDs.contains(AprilTagStats.getInstance().getID())) {
         poseEstimator.addVisionMeasurement(visionPose, currentTimestamp);
       }
+      field.setRobotPose(poseEstimator.getEstimatedPosition());
 }
 public static SwerveDrivePoseEstimator getPoseEstimator(){
     return poseEstimator;
