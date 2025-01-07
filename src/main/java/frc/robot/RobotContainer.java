@@ -38,7 +38,6 @@ import frc.robot.subsystems.IntakeRoller;
 import frc.robot.subsystems.LEDStrip;
 import frc.robot.subsystems.PhasingLEDPattern;
 import frc.robot.subsystems.PhyscialLEDStrip;
-import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.RainbowLEDPattern;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterRoller;
@@ -57,7 +56,6 @@ public class RobotContainer {
   public static final ShooterRoller m_ShooterRoller = new ShooterRoller();
   public static final Climber m_Climber = new Climber();
   public static final AprilTagStats m_AprilTag = new AprilTagStats(Constants.VisionConstants.nameConstants.cameraName, Constants.VisionConstants.nameConstants.publishName,Constants.VisionConstants.nameConstants.tabName);
-  public static final PoseEstimator m_poseEstimator = new PoseEstimator();
   public final LEDStrip ledStrip;
  // public static final LED m_led = new LED(Constants.LEDConstants.LED_PORT1, Constants.LEDConstants.LedLength1);
  

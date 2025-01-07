@@ -107,12 +107,12 @@ public final class Constants {
 
      public static final int LEFT_FRONT_DRIVE_ID = 7;
      public static final int RIGHT_FRONT_DRIVE_ID = 1;
-     public static final int LEFT_BACK_DRIVE_ID = 5; // 5
+     public static final int LEFT_BACK_DRIVE_ID = 4; // 5
      public static final int RIGHT_BACK_DRIVE_ID = 3; // 3
     
      public static final int LEFT_FRONT_TURN_ID = 6;
      public static final int RIGHT_FRONT_TURN_ID = 8;
-     public static  final int LEFT_BACK_TURN_ID = 4; // 4 
+     public static  final int LEFT_BACK_TURN_ID = 5; // 4 
      public static final int RIGHT_BACK_TURN_ID = 2; // 2
     
     public static final int LEFT_FRONT_CANCODER_ID = 3;
